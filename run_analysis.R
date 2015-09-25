@@ -20,7 +20,7 @@ getAndUnzipData <- function() {
 }
 
 main <- function() {
-  getAndUnzipData()
+  ##getAndUnzipData()
 }
 
 main()
