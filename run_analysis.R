@@ -44,7 +44,7 @@ mergeTwoFiles <- function(destFileName, sourceFileNameOne, sourceFileNameTwo) {
 mergeDataSets <- function() {
   pathToDataSet <- paste0("./", DATASET_UNZIPPED_FOLDER);
   setwd(pathToDataSet);
-  print(list.files(path=".", full.names= TRUE, recursive = TRUE, include.dirs = FALSE, pattern="[:alnum:]+\\.txt"));
+  print(list.files(path=".", full.names= TRUE, recursive = TRUE, include.dirs = FALSE, pattern="([:alnum:]||_)+\\.txt"));
   print(getwd());
 }
 
