@@ -1,10 +1,15 @@
 library("downloader")
 library("files")
                 
-DOWNLOAD_URL = "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
-LOCAL_FOLDER = "./data"
-DATASET_ZIP_PATH = "./dataset.zip"
-DATASET_UNZIPPED_FOLDER="UCI HAR Dataset";
+DOWNLOAD_URL <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
+LOCAL_FOLDER <- "./data"
+DATASET_ZIP_PATH <- "./dataset.zip"
+DATASET_UNZIPPED_FOLDER <- "UCI HAR Dataset";
+TEST_FOLDER <- "./test"
+TRAIN_FOLDER <- "./train"
+MERGED_FOLDER <- "./merged"
+TEST_PATTERN  <- "test"
+MERGED_PATTERN <- "merged"
 
 
 ##
@@ -13,6 +18,7 @@ DATASET_UNZIPPED_FOLDER="UCI HAR Dataset";
 ##        - unzipping the data
 
 getAndUnzipData <- function() {
+  print(" ")
   print("Step 0 - creating folder and downloading data");
   
   if (!file.exists(LOCAL_FOLDER)) {
@@ -37,6 +43,9 @@ getAndUnzipData <- function() {
 ##
 ##
 mergeTwoFiles <- function(destFileName, sourceFileNameOne, sourceFileNameTwo) {
+  if (!file.exists(destFileName)) {
+    file.create(destFileName);
+  }
   file.append(destFileName, sourceFileNameOne);
   file.append(destFileName, sourceFileNameTwo);
 }
@@ -44,19 +53,38 @@ mergeTwoFiles <- function(destFileName, sourceFileNameOne, sourceFileNameTwo) {
 mergeDataSets <- function() {
   pathToDataSet <- paste0("./", DATASET_UNZIPPED_FOLDER);
   setwd(pathToDataSet);
-  print(" ");
-  print(list.files(path="./test", full.names= TRUE, recursive = TRUE, include.dirs = FALSE, pattern="([:alnum:]||_)+\\.txt"));
-  print(" ");
-  print(list.files(path="./train", full.names= TRUE, recursive = TRUE, include.dirs = FALSE, pattern="([:alnum:]||_)+\\.txt"));
-  print(" ");
-  print(getwd());
+  
+  if (!file.exists(MERGED_FOLDER)) {
+    dir.create(MERGED_FOLDER)
+  }
+  
+  fileNamePattern <- "([:alnum:]||_)+\\.txt";
+  
+  testDataFiles  <- list.files(path=TEST_FOLDER,  full.names= TRUE, 
+                                                  recursive = TRUE, 
+                                                  include.dirs = FALSE, pattern=fileNamePattern);
+  
+  trainDataFiles <- list.files(path=TRAIN_FOLDER, full.names= TRUE, 
+                                                  recursive = TRUE, 
+                                                  include.dirs = FALSE, pattern=fileNamePattern);
+  
+  for (i  in 0:length(testDataFiles)) {
+     destFileName <- gsub(TEST_PATTERN, MERGED_PATTERN, testDataFiles[i]);
+     mergeTwoFiles(destFileName,testDataFiles[i], trainDataFiles[i]);
+     
+     print(testDataFiles[i]);
+     print(trainDataFiles[i]);
+     print(" ");
+  }
+  
 }
 
 
 main <- function() {
+  initialDirectory <- getwd();
   getAndUnzipData()
   mergeDataSets()
-  setwd( "C:/Users/Marcin_Zakidalski@epam.com/Documents/data_cleaning_coursera");
+  setwd( initialDirectory);
 }
 
 main()
