@@ -1,5 +1,5 @@
 library("downloader")
-
+                
 DOWNLOAD_URL = "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
 LOCAL_FOLDER = "./data"
 DATASET_ZIP_PATH = "./dataset.zip"
@@ -19,8 +19,9 @@ getAndUnzipData <- function() {
   print("Step 0 has been successfully finished")
 }
 
+
 main <- function() {
-  ##getAndUnzipData()
+  getAndUnzipData()
 }
 
 main()
