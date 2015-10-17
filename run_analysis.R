@@ -104,10 +104,9 @@ filterFeatureVector <- function() {
   colNames <- c("id", "feature_name");
   setnames(allFeaturesList, colNames);
   
-  print(summary(allFeaturesList));
   allFeaturesList <- allFeaturesList[grep("(mean\\(\\))|(std\\(\\))", feature_name)];   
-    
-  print(allFeaturesList);
+  allFeaturesList <- allFeaturesList[,id];
+  return allFeaturesList
   
 }
 
@@ -117,6 +116,7 @@ extractMeanStdDev <- function() {
   print(getwd());
   
   featureVector <- filterFeatureVector();
+  print(featureVector);
   print(" ");
   
 }
