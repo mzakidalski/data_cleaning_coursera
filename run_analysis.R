@@ -1,5 +1,8 @@
 library("downloader")
 library("files")
+library("data.table")
+library("dplyr")
+
                 
 DOWNLOAD_URL <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
 LOCAL_FOLDER <- "./data"
@@ -12,6 +15,7 @@ INERTIAL_SIGNALS_FOLDER <- "./merged/Inertial Signals"
 TEST_PATTERN  <- "test"
 MERGED_PATTERN <- "merged"
 DOWNLOADED_DATASET_NAME <- "getdata_projectfiles_UCI HAR Dataset.zip"
+FEATURES_FILE_NAME <- "features.txt"
 
 
 ##
@@ -93,11 +97,34 @@ mergeDataSets <- function() {
   
 }
 
+filterFeatureVector <- function() {
+  pathToFeatures <- paste0("./", FEATURES_FILE_NAME);
+  allFeaturesList <- fread(pathToFeatures);
+  
+  colNames <- c("id", "feature_name");
+  setnames(allFeaturesList, colNames);
+  allFeaturesList <- allFeaturesList[,grepl(allFeaturesList[,feature_name], "mean()") |  grepl(allFeaturesList[,feature_name], "std()")];
+    
+  print(allFeaturesList);
+  
+}
+
+extractMeanStdDev <- function() {
+  print("");
+  print("Step 2 - extracting only the mean and std dev for each measurement");
+  print(getwd());
+  
+  featureVector <- filterFeatureVector();
+  print(" ");
+  
+}
+
 
 main <- function() {
   initialDirectory <- getwd();
-  getAndUnzipData()
-  mergeDataSets()
+  getAndUnzipData();
+  mergeDataSets();
+  extractMeanStdDev();
   setwd( initialDirectory);
 }
 
