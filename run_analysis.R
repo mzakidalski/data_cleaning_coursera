@@ -103,7 +103,9 @@ filterFeatureVector <- function() {
   
   colNames <- c("id", "feature_name");
   setnames(allFeaturesList, colNames);
-  allFeaturesList <- allFeaturesList[,grepl(allFeaturesList[,feature_name], "mean()") |  grepl(allFeaturesList[,feature_name], "std()")];
+  
+  print(summary(allFeaturesList));
+  allFeaturesList <- allFeaturesList[grep("mean\(\)", feature_name)];   
     
   print(allFeaturesList);
   
