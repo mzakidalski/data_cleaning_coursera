@@ -8,6 +8,7 @@ DATASET_UNZIPPED_FOLDER <- "UCI HAR Dataset";
 TEST_FOLDER <- "./test"
 TRAIN_FOLDER <- "./train"
 MERGED_FOLDER <- "./merged"
+INERTIAL_SIGNALS_FOLDER <- "./merged/Inertial Signals"
 TEST_PATTERN  <- "test"
 MERGED_PATTERN <- "merged"
 
@@ -50,13 +51,19 @@ mergeTwoFiles <- function(destFileName, sourceFileNameOne, sourceFileNameTwo) {
   file.append(destFileName, sourceFileNameTwo);
 }
 
+createFolderIfNecessary<- function(path) {
+  if (!dir.exists(path)) {
+    dir.create(path);
+  }
+  
+}
+
 mergeDataSets <- function() {
   pathToDataSet <- paste0("./", DATASET_UNZIPPED_FOLDER);
   setwd(pathToDataSet);
   
-  if (!file.exists(MERGED_FOLDER)) {
-    dir.create(MERGED_FOLDER)
-  }
+  createFolderIfNecessary(MERGED_FOLDER);
+  createFolderIfNecessary(INERTIAL_SIGNALS_FOLDER);
   
   fileNamePattern <- "([:alnum:]||_)+\\.txt";
   
@@ -68,8 +75,13 @@ mergeDataSets <- function() {
                                                   recursive = TRUE, 
                                                   include.dirs = FALSE, pattern=fileNamePattern);
   
-  for (i  in 0:length(testDataFiles)) {
+  print(testDataFiles);
+  print(trainDataFiles);
+  
+  for (i  in 1:length(testDataFiles)) {
+     print(i);
      destFileName <- gsub(TEST_PATTERN, MERGED_PATTERN, testDataFiles[i]);
+     print(destFileName);
      mergeTwoFiles(destFileName,testDataFiles[i], trainDataFiles[i]);
      
      print(testDataFiles[i]);
