@@ -105,7 +105,7 @@ filterFeatureVector <- function() {
   setnames(allFeaturesList, colNames);
   
   print(summary(allFeaturesList));
-  allFeaturesList <- allFeaturesList[grep("mean\(\)", feature_name)];   
+  allFeaturesList <- allFeaturesList[grep("(mean\\(\\))|(std\\(\\))", feature_name)];   
     
   print(allFeaturesList);
   
