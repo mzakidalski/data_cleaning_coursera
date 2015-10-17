@@ -11,6 +11,7 @@ MERGED_FOLDER <- "./merged"
 INERTIAL_SIGNALS_FOLDER <- "./merged/Inertial Signals"
 TEST_PATTERN  <- "test"
 MERGED_PATTERN <- "merged"
+DOWNLOADED_DATASET_NAME <- "getdata_projectfiles_UCI HAR Dataset.zip"
 
 
 ##
@@ -25,8 +26,14 @@ getAndUnzipData <- function() {
   if (!file.exists(LOCAL_FOLDER)) {
     dir.create(LOCAL_FOLDER);
     setwd(LOCAL_FOLDER);
-    download.file(DOWNLOAD_URL, DATASET_ZIP_PATH, method="auto", cacheOK = FALSE)
-    unzip(DATASET_ZIP_PATH)
+    pathToDataSet <- paste0("../",DOWNLOADED_DATASET_NAME);
+    if (file.exists(pathToDataSet)) {
+      file.copy(pathToDataSet,".");
+      file.rename(paste0("./",DOWNLOADED_DATASET_NAME), DATASET_ZIP_PATH);
+    } else {
+      download.file(DOWNLOAD_URL, DATASET_ZIP_PATH, method="auto", cacheOK = FALSE);
+    }
+    unzip(DATASET_ZIP_PATH);
   } else {
     setwd(LOCAL_FOLDER);
     print(" Folder ./data exists!");
@@ -59,6 +66,9 @@ createFolderIfNecessary<- function(path) {
 }
 
 mergeDataSets <- function() {
+  print(" ")
+  print("Step 1 - merging train data set and test data set into one set.");
+  print("Result would be available in folder merged");
   pathToDataSet <- paste0("./", DATASET_UNZIPPED_FOLDER);
   setwd(pathToDataSet);
   
@@ -75,19 +85,11 @@ mergeDataSets <- function() {
                                                   recursive = TRUE, 
                                                   include.dirs = FALSE, pattern=fileNamePattern);
   
-  print(testDataFiles);
-  print(trainDataFiles);
-  
   for (i  in 1:length(testDataFiles)) {
-     print(i);
      destFileName <- gsub(TEST_PATTERN, MERGED_PATTERN, testDataFiles[i]);
-     print(destFileName);
      mergeTwoFiles(destFileName,testDataFiles[i], trainDataFiles[i]);
-     
-     print(testDataFiles[i]);
-     print(trainDataFiles[i]);
-     print(" ");
   }
+  print("Step 1 has been successfully finished");
   
 }
 
