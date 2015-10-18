@@ -122,10 +122,12 @@ extractMeanStdDev <- function() {
   
   allFeatureData <-fread(X_MERGED_PATH);
   allFeatureData <- allFeatureData[, cols, with = FALSE];
-  names(allFeatureData) <- featureVector[,feature_name]
+  names(allFeatureData) <- featureVector[,feature_name];
+  allFeatureData <- allFeatureData[,id:=.I];
+  setkey(allFeatureData, id);
   
   print("  ");
-  print(head(allFeatureData));
+  print(allFeatureData);
   print("  ");
   
   print("End of Step 2");
