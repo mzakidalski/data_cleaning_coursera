@@ -16,7 +16,10 @@ TEST_PATTERN  <- "test"
 MERGED_PATTERN <- "merged"
 DOWNLOADED_DATASET_NAME <- "getdata_projectfiles_UCI HAR Dataset.zip"
 FEATURES_FILE_NAME <- "features.txt"
-
+MEAN_STD_DEV_MEASURES_REGEXP <- "(mean\\(\\))|(std\\(\\))"
+Y_MERGED_PATH <- "./merged/y_merged.txt"
+X_MERGED_PATH <- "./merged/X_merged.txt"
+SUBJECT_MERGED_PATH <- "./merged/subject_merged.txt"
 
 ##
 ## Step 0 - creating folder for data,
@@ -97,27 +100,36 @@ mergeDataSets <- function() {
   
 }
 
-filterFeatureVector <- function() {
+getFeatureList <- function() {
   pathToFeatures <- paste0("./", FEATURES_FILE_NAME);
-  allFeaturesList <- fread(pathToFeatures);
+  featuresList <- fread(pathToFeatures);
   
   colNames <- c("id", "feature_name");
-  setnames(allFeaturesList, colNames);
+  setnames(featuresList, colNames);
   
-  allFeaturesList <- allFeaturesList[grep("(mean\\(\\))|(std\\(\\))", feature_name)];   
-  allFeaturesList <- allFeaturesList[,id];
-  return allFeaturesList
-  
+  featuresList <- featuresList[grep(MEAN_STD_DEV_MEASURES_REGEXP, feature_name)];  
+  return (featuresList);
 }
 
 extractMeanStdDev <- function() {
   print("");
   print("Step 2 - extracting only the mean and std dev for each measurement");
+  print("       - naming the retrieved variables exactly the same as in features.txt");
   print(getwd());
+    
+  featureVector <- getFeatureList();
+  cols = paste("V", featureVector[,id], sep="");
   
-  featureVector <- filterFeatureVector();
-  print(featureVector);
-  print(" ");
+  allFeatureData <-fread(X_MERGED_PATH);
+  allFeatureData <- allFeatureData[, cols, with = FALSE];
+  names(allFeatureData) <- featureVector[,feature_name]
+  
+  print("  ");
+  print(head(allFeatureData));
+  print("  ");
+  
+  print("End of Step 2");
+  return(allFeatureData);
   
 }
 
@@ -126,7 +138,7 @@ main <- function() {
   initialDirectory <- getwd();
   getAndUnzipData();
   mergeDataSets();
-  extractMeanStdDev();
+  selectedFeatures <- extractMeanStdDev();
   setwd( initialDirectory);
 }
 
