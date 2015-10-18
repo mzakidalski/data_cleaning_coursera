@@ -58,9 +58,11 @@ getAndUnzipData <- function() {
 ##
 ##
 mergeTwoFiles <- function(destFileName, sourceFileNameOne, sourceFileNameTwo) {
-  if (!file.exists(destFileName)) {
-    file.create(destFileName);
-  }
+  if (file.exists(destFileName)) {
+    file.remove(destFileName);
+  } 
+  file.create(destFileName);
+  
   file.append(destFileName, sourceFileNameOne);
   file.append(destFileName, sourceFileNameTwo);
 }
