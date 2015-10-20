@@ -102,6 +102,37 @@ mergeDataSets <- function() {
   
 }
 
+addValueToString<- function(result, original, regex, toAdd) {
+  matchingIds <- grep(regex, original);
+  for (j in matchingIds) {
+    result[j] <- paste0(result[j], toAdd);
+  }
+  return(result);
+}
+
+transformNameToReadable<-function(x) {
+  print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+  print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+  print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
+  print(class(x));
+  print(x);
+  
+  result <- vector(mode = "character", length = 10);
+  result <- addValueToString(result, x, "^t", "TIME_DOMAIN_");
+  result <- addValueToString(result, x, "^f", "FREQ_DOMAIN_");
+  result <- addValueToString(result, x, "mean\\(\\)", "MEAN_OF_");
+  result <- addValueToString(result, x,  "std\\(\\)", "STD_DEVIATION_OF_");
+  result <- addValueToString(result, x,  "Mag", "Magnitude_");
+  result <- addValueToString(result, x, "Body", "Body_");
+  result <- addValueToString(result, x, "Gyro", "Gyroscope_");
+  result <- addValueToString(result, x, "Gravity","Gravity_");
+  result <- addValueToString(result, x, "-X", "BY_X_AXIS_");
+  result <- addValueToString(result, x, "-Y", "BY_Y_AXIS_");
+  result <- addValueToString(result, x, "-Z", "BY_Z_AXIS_");
+  
+  return (result);
+}
+
 getFeatureList <- function() {
   pathToFeatures <- paste0("./", FEATURES_FILE_NAME);
   featuresList <- fread(pathToFeatures);
@@ -109,17 +140,19 @@ getFeatureList <- function() {
   colNames <- c("id", "feature_name");
   setnames(featuresList, colNames);
   
-  featuresList <- featuresList[grep(MEAN_STD_DEV_MEASURES_REGEXP, feature_name)];  
+  featuresList <- featuresList[grep(MEAN_STD_DEV_MEASURES_REGEXP, feature_name)];
+  featuresList <- featuresList[,readable_name:=transformNameToReadable(feature_name)];
   return (featuresList);
 }
+
 
 extractMeanStdDev <- function() {
   print("");
   print("Step 2 - extracting only the mean and std dev for each measurement");
   print("       - naming the retrieved variables exactly the same as in features.txt");
-  print(getwd());
     
   featureVector <- getFeatureList();
+  print(featureVector);
   cols = paste("V", featureVector[,id], sep="");
     
   allFeatureData <-fread(X_MERGED_PATH);
@@ -128,6 +161,7 @@ extractMeanStdDev <- function() {
   allFeatureData <- allFeatureData[,id:=.I];
   setkey(allFeatureData, id);
   
+  print(allFeatureData);
   print("End of Step 2");
   return(allFeatureData);
   
