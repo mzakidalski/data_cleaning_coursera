@@ -113,22 +113,20 @@ addValueToString<- function(result, original, regex, toAdd) {
 transformNameToReadable<-function(x) {
 
   result <- vector(mode = "character", length = length(x));
-  ##regExps <- c( );
-  ##readables <- c();
-  result <- addValueToString(result, x, "^t", "Time_");
-  result <- addValueToString(result, x, "^f", "Freq_");
-  result <- addValueToString(result, x, "mean\\(\\)", "Mean_");
-  result <- addValueToString(result, x,  "std\\(\\)", "Std_Deviation_");
-  result <- addValueToString(result, x,  "Mag", "Magnitude_");
-  result <- addValueToString(result, x, "Body", "Body_");
-  result <- addValueToString(result, x, "Gyro", "Gyroscope_");
-  result <- addValueToString(result, x, "Gravity","Gravity_");
-  result <- addValueToString(result, x, "Acc","Accelerometer_");
-  result <- addValueToString(result, x, "Jerk","Jerk_");
-  
-  result <- addValueToString(result, x, "-X", "X_AXIS");
-  result <- addValueToString(result, x, "-Y", "Y_AXIS");
-  result <- addValueToString(result, x, "-Z", "Z_AXIS");
+  regExps <- c("^t", "^f", "mean\\(\\)",  
+               "std\\(\\)",  "Mag", "Body", 
+               "Gyro", "Gravity", "Acc", 
+               "Jerk", "-X", "-Y", 
+               "-Z");
+  readables <- c("Time", "Freq", "_Mean", 
+                 "_Std_Deviation", "_Magnitude", "_Body", 
+                 "_Gyroscope", "_Gravity", "_Accelerometer", 
+                 "_Jerk", "_X_AXIS", "_Y_AXIS", 
+                 "_Z_AXIS");
+
+  for (j in 1:length(readables)) {
+    result <- addValueToString(result, x, regExps[j], readables[j]);
+  }
   
   return (result);
 }
@@ -152,16 +150,14 @@ extractMeanStdDev <- function() {
   print("       - naming the retrieved variables exactly the same as in features.txt");
     
   featureVector <- getFeatureList();
-  print(featureVector);
   cols = paste("V", featureVector[,id], sep="");
     
   allFeatureData <-fread(X_MERGED_PATH);
   allFeatureData <- allFeatureData[, cols, with = FALSE];
-  names(allFeatureData) <- featureVector[,feature_name];
+  names(allFeatureData) <- featureVector[,readable_name];
   allFeatureData <- allFeatureData[,id:=.I];
   setkey(allFeatureData, id);
   
-  print(allFeatureData);
   print("End of Step 2");
   return(allFeatureData);
   
