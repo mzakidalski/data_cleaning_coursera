@@ -111,24 +111,24 @@ addValueToString<- function(result, original, regex, toAdd) {
 }
 
 transformNameToReadable<-function(x) {
-  print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-  print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-  print("!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
-  print(class(x));
-  print(x);
-  
-  result <- vector(mode = "character", length = 10);
-  result <- addValueToString(result, x, "^t", "TIME_DOMAIN_");
-  result <- addValueToString(result, x, "^f", "FREQ_DOMAIN_");
-  result <- addValueToString(result, x, "mean\\(\\)", "MEAN_OF_");
-  result <- addValueToString(result, x,  "std\\(\\)", "STD_DEVIATION_OF_");
+
+  result <- vector(mode = "character", length = length(x));
+  ##regExps <- c( );
+  ##readables <- c();
+  result <- addValueToString(result, x, "^t", "Time_");
+  result <- addValueToString(result, x, "^f", "Freq_");
+  result <- addValueToString(result, x, "mean\\(\\)", "Mean_");
+  result <- addValueToString(result, x,  "std\\(\\)", "Std_Deviation_");
   result <- addValueToString(result, x,  "Mag", "Magnitude_");
   result <- addValueToString(result, x, "Body", "Body_");
   result <- addValueToString(result, x, "Gyro", "Gyroscope_");
   result <- addValueToString(result, x, "Gravity","Gravity_");
-  result <- addValueToString(result, x, "-X", "BY_X_AXIS_");
-  result <- addValueToString(result, x, "-Y", "BY_Y_AXIS_");
-  result <- addValueToString(result, x, "-Z", "BY_Z_AXIS_");
+  result <- addValueToString(result, x, "Acc","Accelerometer_");
+  result <- addValueToString(result, x, "Jerk","Jerk_");
+  
+  result <- addValueToString(result, x, "-X", "X_AXIS");
+  result <- addValueToString(result, x, "-Y", "Y_AXIS");
+  result <- addValueToString(result, x, "-Z", "Z_AXIS");
   
   return (result);
 }
