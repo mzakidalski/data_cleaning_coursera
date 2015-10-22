@@ -183,14 +183,8 @@ useDescriptiveActivityNames <- function() {
   setkey(activities, id);
   
   activityLabels <- readActivityLabels();
-  print(activityLabels);
-  print(activityLabels[,ActivityName]);
-  
-  print(activities);
   activities <- activities[,Activity:=as.factor(Activity)];
   levels(activities$Activity) <- activityLabels[,ActivityName];
-  print(activities);
-  
   
   print("End of step 3")  ;
   
