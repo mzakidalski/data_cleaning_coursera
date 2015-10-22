@@ -31,7 +31,7 @@ getAndUnzipData <- function() {
   print(" ")
   print("Step 0 - creating folder and downloading data");
   
-  if (!file.exists(LOCAL_FOLDER)) {
+  if (!dir.exists(LOCAL_FOLDER)) {
     dir.create(LOCAL_FOLDER);
     setwd(LOCAL_FOLDER);
     pathToDataSet <- paste0("../",DOWNLOADED_DATASET_NAME);
@@ -148,7 +148,7 @@ getFeatureList <- function() {
 extractMeanStdDev <- function() {
   print("");
   print("Step 2 - extracting only the mean and std dev for each measurement");
-  print("       - naming the retrieved variables exactly the same as in features.txt");
+  print("part of step 4 - naming the retrieved variables exactly the same as in features.txt");
     
   featureVector <- getFeatureList();
   cols = paste("V", featureVector[,id], sep="");
@@ -160,6 +160,7 @@ extractMeanStdDev <- function() {
   setkey(allFeatureData, id);
   
   print("End of Step 2");
+  print("End of part of Step 4");
   return(allFeatureData);
   
 }
@@ -190,6 +191,22 @@ useDescriptiveActivityNames <- function() {
   
 }
 
+readParticipants<-function() {
+  print("");
+  print("second part of step 4 - appropriate labels for variables");
+  print("reading participants data");
+  
+  participants <- fread(SUBJECT_MERGED_PATH);
+  participants <- participants[,id:=.I];
+  colNames <- c("Participant_Id", "id");
+  setnames(participants, colNames);
+  setkey(participants, id);
+  
+  print("end of second part of step 4");
+  print("")
+  
+}
+
 
 main <- function() {
   initialDirectory <- getwd();
@@ -198,6 +215,7 @@ main <- function() {
   mergeDataSets();
   selectedFeatures <- extractMeanStdDev();
   activityNames <- useDescriptiveActivityNames();
+  participants <- readParticipants();
   
   setwd( initialDirectory);
 }
