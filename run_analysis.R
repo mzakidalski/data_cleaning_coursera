@@ -187,7 +187,8 @@ useDescriptiveActivityNames <- function() {
   activities <- activities[,Activity:=as.factor(Activity)];
   levels(activities$Activity) <- activityLabels[,ActivityName];
   
-  print("End of step 3")  ;
+  print("End of step 3");
+  return(activities);
   
 }
 
@@ -203,10 +204,18 @@ readParticipants<-function() {
   setkey(participants, id);
   
   print("end of second part of step 4");
-  print("")
+  print("");
+  return(participants);
   
 }
 
+mergeAllTables<-function(x,y,z) {
+  
+  result <- merge(x, y, by = "id");
+  result <- merge(result, z, by = "id");
+  print(result);
+  return(result);
+}
 
 main <- function() {
   initialDirectory <- getwd();
@@ -216,6 +225,7 @@ main <- function() {
   selectedFeatures <- extractMeanStdDev();
   activityNames <- useDescriptiveActivityNames();
   participants <- readParticipants();
+  mergedTables <- mergeAllTables(participants, activityNames, selectedFeatures);
   
   setwd( initialDirectory);
 }
