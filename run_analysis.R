@@ -165,9 +165,9 @@ extractMeanStdDev <- function() {
 }
 
 readActivityLabels <- function() {
-  activities <- fread(ACTIVITY_LABELS_PATH);
-  colnames(activities) <- c("Key","ActivityName");
-  return(activities);
+  result <- fread(ACTIVITY_LABELS_PATH);
+  colnames(result) <- c("Key","ActivityName");
+  return(result);
 }
 
 useDescriptiveActivityNames <- function() {
@@ -183,10 +183,15 @@ useDescriptiveActivityNames <- function() {
   setkey(activities, id);
   
   activityLabels <- readActivityLabels();
-  activities[,Activity] <- 
-    activities[,as.factor(Activity), levels<- activityLabels[,Key], labels <- activityLabels[,ActivityName]];
+  print(activityLabels);
+  print(activityLabels[,ActivityName]);
   
   print(activities);
+  activities <- activities[,Activity:=as.factor(Activity)];
+  levels(activities$Activity) <- activityLabels[,ActivityName];
+  print(activities);
+  
+  
   print("End of step 3")  ;
   
 }
