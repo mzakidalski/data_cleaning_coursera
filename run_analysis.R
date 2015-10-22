@@ -20,6 +20,7 @@ MEAN_STD_DEV_MEASURES_REGEXP <- "(mean\\(\\))|(std\\(\\))"
 Y_MERGED_PATH <- "./merged/y_merged.txt"
 X_MERGED_PATH <- "./merged/X_merged.txt"
 SUBJECT_MERGED_PATH <- "./merged/subject_merged.txt"
+ACTIVITY_LABELS_PATH <- "./activity_labels.txt"
 
 ##
 ## Step 0 - creating folder for data,
@@ -163,12 +164,42 @@ extractMeanStdDev <- function() {
   
 }
 
+readActivityLabels <- function() {
+  activities <- fread(ACTIVITY_LABELS_PATH);
+  colnames(activities) <- c("Key","ActivityName");
+  return(activities);
+}
+
+useDescriptiveActivityNames <- function() {
+  print("");
+  print("Step 3 - use descriptive names on to name activities in the data set");
+  
+  pathToActivitiesFile <- paste0("./", Y_MERGED_PATH );
+  activities <- fread(pathToActivitiesFile);
+
+  activities <- activities[,id:=.I];
+  colNames <- c("Activity","id");
+  setnames(activities, colNames);
+  setkey(activities, id);
+  
+  activityLabels <- readActivityLabels();
+  activities[,Activity] <- 
+    activities[,as.factor(Activity), levels<- activityLabels[,Key], labels <- activityLabels[,ActivityName]];
+  
+  print(activities);
+  print("End of step 3")  ;
+  
+}
+
 
 main <- function() {
   initialDirectory <- getwd();
+  
   getAndUnzipData();
   mergeDataSets();
   selectedFeatures <- extractMeanStdDev();
+  activityNames <- useDescriptiveActivityNames();
+  
   setwd( initialDirectory);
 }
 
