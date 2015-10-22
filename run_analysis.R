@@ -199,7 +199,7 @@ readParticipants<-function() {
   
   participants <- fread(SUBJECT_MERGED_PATH);
   participants <- participants[,id:=.I];
-  colNames <- c("Participant_Id", "id");
+  colNames <- c("Subject_Id", "id");
   setnames(participants, colNames);
   setkey(participants, id);
   
