@@ -22,4 +22,9 @@ Out of all available variables only those describing mean and std. deviation wer
 
 4. **STEP 4** - appropriate labels for variables. Algorithm of variable name creation is described in the CodeBook file. Result of this step is saved in **${unzipped_dataset_folder}/dataset_before_groupind/data_before_grouping.txt**
 
+5. **STEP 5** - data from the previous step is aggregated by the **(Subject_Id, Activity)** pair of columns. The columns in the output data set are replaced with the mean values of all observations from the  aggregation group. The final result is saved in **${unzipped_dataset_folder}/final_dataset/final_dataset.txt**.
+
+All execution steps print the progress information to the console window. 
+
+
 

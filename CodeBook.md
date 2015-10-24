@@ -5,18 +5,31 @@ date: "September 25, 2015"
 output: html_document
 ---
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+The clean data set contains the following columns:
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+1. Subject_Id - identifier of the person conducting particular activity. It is integer value between 1 and 30
+2. Activity - has the following values:
+    + WALKING
+    + WALKING_UPSTAIRS
+    + WALKING_DOWNSTAIRS
+    + SITTING
+    + STANDING
+    + LAYING
+    The activity names are self-explanatory. Is it worth noticing to realise the difference between different kinds of WALKING activities (walking in the plain surrounding, going downstairs, going upstairs)
+3. particular measure variables - these are mean values of all observations of particular variable for given pair (Subject_Id, Activity).
 
-```{r}
-summary(cars)
-```
 
-You can also embed plots, for example:
 
-```{r, echo=FALSE}
-plot(cars)
-```
+The complete list of other variables:
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+
+"Time_Mean_Body_Accelerometer_X_AXIS","Time_Mean_Body_Accelerometer_Y_AXIS",
+"Time_Mean_Body_Accelerometer_Z_AXIS","Time_Std_Deviation_Body_Accelerometer_X_AXIS","
+Time_Std_Deviation_Body_Accelerometer_Y_AXIS",
+"Time_Std_Deviation_Body_Accelerometer_Z_AXIS",
+"Time_Mean_Gravity_Accelerometer_X_AXIS", 
+"Time_Mean_Gravity_Accelerometer_Y_AXIS",
+"Time_Mean_Gravity_Accelerometer_Z_AXIS","Time_Std_Deviation_Gravity_Accelerometer_X_AXIS","Time_Std_Deviation_Gravity_Accelerometer_Y_AXIS",
+"Time_Std_Deviation_Gravity_Accelerometer_Z_AXIS","Time_Mean_Body_Accelerometer_Jerk_X_AXIS", "Time_Mean_Body_Accelerometer_Jerk_Y_AXIS","Time_Mean_Body_Accelerometer_Jerk_Z_AXIS","Time_Std_Deviation_Body_Accelerometer_Jerk_X_AXIS","Time_Std_Deviation_Body_Accelerometer_Jerk_Y_AXIS","Time_Std_Deviation_Body_Accelerometer_Jerk_Z_AXIS","Time_Mean_Body_Gyroscope_X_AXIS" ,"Time_Mean_Body_Gyroscope_Y_AXIS","Time_Mean_Body_Gyroscope_Z_AXIS","Time_Std_Deviation_Body_Gyroscope_X_AXIS","Time_Std_Deviation_Body_Gyroscope_Y_AXIS","Time_Std_Deviation_Body_Gyroscope_Z_AXIS","Time_Mean_Body_Gyroscope_Jerk_X_AXIS","Time_Mean_Body_Gyroscope_Jerk_Y_AXIS", "Time_Mean_Body_Gyroscope_Jerk_Z_AXIS","Time_Std_Deviation_Body_Gyroscope_Jerk_X_AXIS","Time_Std_Deviation_Body_Gyroscope_Jerk_Y_AXIS","Time_Std_Deviation_Body_Gyroscope_Jerk_Z_AXIS","Time_Mean_Magnitude_Body_Accelerometer","Time_Std_Deviation_Magnitude_Body_Accelerometer", "Time_Mean_Magnitude_Gravity_Accelerometer","Time_Std_Deviation_Magnitude_Gravity_Accelerometer","Time_Mean_Magnitude_Body_Accelerometer_Jerk", "Time_Std_Deviation_Magnitude_Body_Accelerometer_Jerk","Time_Mean_Magnitude_Body_Gyroscope","Time_Std_Deviation_Magnitude_Body_Gyroscope","Time_Mean_Magnitude_Body_Gyroscope_Jerk","Time_Std_Deviation_Magnitude_Body_Gyroscope_Jerk","Freq_Mean_Body_Accelerometer_X_AXIS","Freq_Mean_Body_Accelerometer_Y_AXIS","Freq_Mean_Body_Accelerometer_Z_AXIS","Freq_Std_Deviation_Body_Accelerometer_X_AXIS", "Freq_Std_Deviation_Body_Accelerometer_Y_AXIS","Freq_Std_Deviation_Body_Accelerometer_Z_AXIS","Freq_Mean_Body_Accelerometer_Jerk_X_AXIS","Freq_Mean_Body_Accelerometer_Jerk_Y_AXIS","Freq_Mean_Body_Accelerometer_Jerk_Z_AXIS","Freq_Std_Deviation_Body_Accelerometer_Jerk_X_AXIS", "Freq_Std_Deviation_Body_Accelerometer_Jerk_Y_AXIS","Freq_Std_Deviation_Body_Accelerometer_Jerk_Z_AXIS","Freq_Mean_Body_Gyroscope_X_AXIS","Freq_Mean_Body_Gyroscope_Y_AXIS","Freq_Mean_Body_Gyroscope_Z_AXIS","Freq_Std_Deviation_Body_Gyroscope_X_AXIS",
+"Freq_Std_Deviation_Body_Gyroscope_Y_AXIS","Freq_Std_Deviation_Body_Gyroscope_Z_AXIS","Freq_Mean_Magnitude_Body_Accelerometer","Freq_Std_Deviation_Magnitude_Body_Accelerometer","Freq_Mean_Magnitude_Body_Accelerometer_Jerk","Freq_Std_Deviation_Magnitude_Body_Accelerometer_Jerk",
+"Freq_Mean_Magnitude_Body_Gyroscope","Freq_Std_Deviation_Magnitude_Body_Gyroscope","Freq_Mean_Magnitude_Body_Gyroscope_Jerk","Freq_Std_Deviation_Magnitude_Body_Gyroscope_Jerk"
