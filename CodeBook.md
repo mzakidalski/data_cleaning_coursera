@@ -16,7 +16,15 @@ The clean data set contains the following columns:
     + STANDING
     + LAYING
     The activity names are self-explanatory. Is it worth noticing to realise the difference between different kinds of WALKING activities (walking in the plain surrounding, going downstairs, going upstairs)
-3. particular measure variables - these are mean values of all observations of particular variable for given pair (Subject_Id, Activity).
+3. particular measure variables - these are mean values of all observations of particular variable for given pair (Subject_Id, Activity). Measure units are exactly the same as those in the raw data set.Variables were created summing up together the following parts:
+
+     + Time - when variable is measured in the time domain, Freq - when it is in the frequency domain
+     + Mean / Std_Deviation - variable is mean or std. deviation
+     + Magnitude - magnitude of signals calculated using the Euclidean norm
+     + Body / Gravity - part of the signal connected with body movement / gravity influence
+     + Gyroscope / Accelerometer - source of the signal 
+     + Jerk - angular velocity derived in time
+     + X_AXIS, Y_AXIS, Z_AXIS - axis along which the measure was made.
 
 
 
