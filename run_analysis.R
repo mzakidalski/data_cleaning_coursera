@@ -208,7 +208,7 @@ saveDataTable<-function(dataFrame, directory, file) {
     dir.create(directory);  
   }
   setwd(directory);
-  write.table(dataFrame, file, sep=",");
+  write.table(dataFrame, file, sep=",",  row.name=FALSE );
   setwd(initialFolder);
 }
 
