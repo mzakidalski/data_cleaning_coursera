@@ -1,22 +1,25 @@
 ---
 title: "README.MD"
 author: "Marcin Zakidalski"
-date: "September 25, 2015"
+date: "October 24, 2015"
 output: html_document
 ---
 
-This is an R Markdown document. Markdown is a simple formatting syntax for authoring HTML, PDF, and MS Word documents. For more details on using R Markdown see <http://rmarkdown.rstudio.com>.
+This README file is to describe the way the script run_analysis.R works. Reading of this script should be accompanied with reading of CodeBook. While this document covers the technicalies of the performed data clean-up, the latter one describes all variables available present in the clean output dataset.
 
-When you click the **Knit** button a document will be generated that includes both content as well as the output of any embedded R code chunks within the document. You can embed an R code chunk like this:
+The source dataset for this script is [Human Activity Recognition using smartphones](http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones) . This script was created as a homework project for ["Getting and cleaning data""](https://www.coursera.org/course/getdata) MOOC class.
 
-```{r}
-summary(cars)
-```
+Some partial results described below were saved in specified locations. Those file may not only serve for debug purposes but they may also serve as help in understanding the way the run_analysis.R script works. 
 
-You can also embed plots, for example:
+The script performs following operations:
 
-```{r, echo=FALSE}
-plot(cars)
-```
+1. **STEP 0** - creation of "data" directory  in the working directory and download of dataset into it (in case of its absence in the working directory). 
 
-Note that the `echo = FALSE` parameter was added to the code chunk to prevent printing of the R code that generated the plot.
+2. **STEP 1** - merge of training set and testing set into one data set - this step is executed done via concatenation of files: **(y_test.txt, y_test.txt)** and **(X_test.txt, X_train.txt)**. Result of the operation is saved in **${unzipped_dataset_folder}/merged** directory of unzipped dataset. 
+Out of all available variables only those describing mean and std. deviation were chosen. In this particular case it was executed just by choosing variables containing _"mean()"_ or _"st()"_ in their names. As a result of design decision all variables representing mean frequency of some measurements (e.g. _fBodyAcc-meanFreq()-X_) were discarded during this extraction phase.
+
+3. **STEP 3** - adding  descriptive names to the activities. Codes for activities are described in details in the CodeBook file.
+
+4. **STEP 4** - appropriate labels for variables. Algorithm of variable name creation is described in the CodeBook file. Result of this step is saved in **${unzipped_dataset_folder}/dataset_before_groupind/data_before_grouping.txt**
+
+

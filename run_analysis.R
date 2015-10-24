@@ -221,6 +221,7 @@ mergeAllTables<-function(x,y,z) {
 
 aggregateByActivParticip<-function(mergedTables) {
   print("Step 5 - aggregating by Subject_Id and Activity");
+  print("       - replacing all other columns with their mean values");
   result <- mergedTables %>% group_by(Subject_Id,Activity) %>% summarise_each(funs(mean)) %>% select(-id);
   saveDataTable(result,FINAL_DATASET_FOLDER, FINAL_DATASET_FILE);  
   print("Step 5 finished.");
