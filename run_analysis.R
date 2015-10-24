@@ -2,7 +2,7 @@ library("downloader")
 library("files")
 library("data.table")
 library("dplyr")
-
+library("plyr")
                 
 DOWNLOAD_URL <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
 LOCAL_FOLDER <- "./data"
@@ -23,6 +23,8 @@ SUBJECT_MERGED_PATH <- "./merged/subject_merged.txt"
 ACTIVITY_LABELS_PATH <- "./activity_labels.txt"
 DATASET_BEFORE_GROUPING_FOLDER <- "./dataset_before_grouping"
 DATASET_BEFORE_GROUPING_FILE <-"data_before_grouping.txt"
+FINAL_DATASET_FOLDER <- "./final_dataset"
+FINAL_DATASET_FILE <-"final_dataset.txt"
 
 getAndUnzipData <- function() {
   print(" ")
@@ -33,11 +35,15 @@ getAndUnzipData <- function() {
   }
   setwd(LOCAL_FOLDER);
   pathToDataSet <- paste0("../",DOWNLOADED_DATASET_NAME);
+  print(getwd());
+  print(pathToDataSet);
   if (file.exists(pathToDataSet)) {
     file.copy(pathToDataSet,".");
     file.rename(paste0("./",DOWNLOADED_DATASET_NAME), DATASET_ZIP_PATH);
   } else {
     download.file(DOWNLOAD_URL, DATASET_ZIP_PATH, method="auto", cacheOK = FALSE);
+    file.copy(DATASET_ZIP_PATH,"..");
+    file.rename(paste0("../",DATASET_ZIP_PATH), paste0("../",DOWNLOADED_DATASET_NAME));
   }
   unzip(DATASET_ZIP_PATH);
  
@@ -213,6 +219,17 @@ mergeAllTables<-function(x,y,z) {
   return(result);
 }
 
+aggregateByActivParticip<-function(mergedTables) {
+  print("Step 5 - aggregating by Subject_Id and Activity");
+  result <- mergedTables %>% group_by(Subject_Id,Activity) %>% summarise_each(funs(mean)) %>% select(-id);
+  saveDataTable(result,FINAL_DATASET_FOLDER, FINAL_DATASET_FILE);  
+  print("Step 5 finished.");
+  print("Final dataset available in:");
+  print(paste0(FINAL_DATASET_FOLDER,"/",FINAL_DATASET_FILE));
+  print(" ");
+  print(" ");
+}
+
 main <- function() {
   initialDirectory <- getwd();
   
@@ -223,7 +240,9 @@ main <- function() {
   participants <- readParticipants();
   mergedTables <- mergeAllTables(participants, activityNames, selectedFeatures);
   saveDataTable(mergedTables,DATASET_BEFORE_GROUPING_FOLDER, DATASET_BEFORE_GROUPING_FILE);
+  aggregateByActivParticip(mergedTables);
   
+  print("Script ended successfully.");
   setwd( initialDirectory);
 }
 
