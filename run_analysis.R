@@ -21,11 +21,8 @@ Y_MERGED_PATH <- "./merged/y_merged.txt"
 X_MERGED_PATH <- "./merged/X_merged.txt"
 SUBJECT_MERGED_PATH <- "./merged/subject_merged.txt"
 ACTIVITY_LABELS_PATH <- "./activity_labels.txt"
-
-##
-## Step 0 - creating folder for data,
-##        - downloading file into it
-##        - unzipping the data
+DATASET_BEFORE_GROUPING_FOLDER <- "./dataset_before_grouping"
+DATASET_BEFORE_GROUPING_FILE <-"data_before_grouping.txt"
 
 getAndUnzipData <- function() {
   print(" ")
@@ -33,31 +30,21 @@ getAndUnzipData <- function() {
   
   if (!dir.exists(LOCAL_FOLDER)) {
     dir.create(LOCAL_FOLDER);
-    setwd(LOCAL_FOLDER);
-    pathToDataSet <- paste0("../",DOWNLOADED_DATASET_NAME);
-    if (file.exists(pathToDataSet)) {
-      file.copy(pathToDataSet,".");
-      file.rename(paste0("./",DOWNLOADED_DATASET_NAME), DATASET_ZIP_PATH);
-    } else {
-      download.file(DOWNLOAD_URL, DATASET_ZIP_PATH, method="auto", cacheOK = FALSE);
-    }
-    unzip(DATASET_ZIP_PATH);
-  } else {
-    setwd(LOCAL_FOLDER);
-    print(" Folder ./data exists!");
-    print(" Script did not download once again dataset.");
-    print(" For redownloading data just delete the ./data folder");
   }
-  
+  setwd(LOCAL_FOLDER);
+  pathToDataSet <- paste0("../",DOWNLOADED_DATASET_NAME);
+  if (file.exists(pathToDataSet)) {
+    file.copy(pathToDataSet,".");
+    file.rename(paste0("./",DOWNLOADED_DATASET_NAME), DATASET_ZIP_PATH);
+  } else {
+    download.file(DOWNLOAD_URL, DATASET_ZIP_PATH, method="auto", cacheOK = FALSE);
+  }
+  unzip(DATASET_ZIP_PATH);
+ 
   print("Step 0 has been successfully finished")
 }
 
 
-##
-## Step 1 - merging test and train datasets into one
-##
-##
-##
 mergeTwoFiles <- function(destFileName, sourceFileNameOne, sourceFileNameTwo) {
   if (file.exists(destFileName)) {
     file.remove(destFileName);
@@ -209,11 +196,20 @@ readParticipants<-function() {
   
 }
 
+saveDataTable<-function(dataFrame, directory, file) {
+  initialFolder <- getwd();
+  if (!dir.exists(directory)) {
+    dir.create(directory);  
+  }
+  setwd(directory);
+  write.table(dataFrame, file, sep=",");
+  setwd(initialFolder);
+}
+
 mergeAllTables<-function(x,y,z) {
   
   result <- merge(x, y, by = "id");
   result <- merge(result, z, by = "id");
-  print(result);
   return(result);
 }
 
@@ -226,6 +222,7 @@ main <- function() {
   activityNames <- useDescriptiveActivityNames();
   participants <- readParticipants();
   mergedTables <- mergeAllTables(participants, activityNames, selectedFeatures);
+  saveDataTable(mergedTables,DATASET_BEFORE_GROUPING_FOLDER, DATASET_BEFORE_GROUPING_FILE);
   
   setwd( initialDirectory);
 }
