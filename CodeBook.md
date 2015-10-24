@@ -16,8 +16,8 @@ The clean data set contains the following columns:
     + STANDING
     + LAYING
     The activity names are self-explanatory. Is it worth noticing to realise the difference between different kinds of WALKING activities (walking in the plain surrounding, going downstairs, going upstairs)
-3. particular measure variables - these are mean values of all observations of particular variable for given pair (Subject_Id, Activity). Measure units are exactly the same as those in the raw data set.Variables were created summing up together the following parts:
-
+3. particular measure variables - these are **mean values of all observations of particular variable for given pair of (Subject_Id, Activity)**.The variables chosen from the raw data set were theese containing "mean()" (mean value) or "st()" (standard deviation )in their names. 
+Measure units are exactly the same as those in the raw data set.Variable names were created summing up together the following parts:
      + Time - when variable is measured in the time domain, Freq - when it is in the frequency domain
      + Mean / Std_Deviation - variable is mean or std. deviation
      + Magnitude - magnitude of signals calculated using the Euclidean norm
@@ -26,10 +26,10 @@ The clean data set contains the following columns:
      + Jerk - angular velocity derived in time
      + X_AXIS, Y_AXIS, Z_AXIS - axis along which the measure was made.
 
+Following those rules **Time_Mean_Body_Accelerometer_X_AXIS** stands for **time-domain mean** value of **acceleration** along **X axis** associated with the movement of the **body** read from **accelerometer**. 
 
 
 The complete list of other variables:
-
 
 "Time_Mean_Body_Accelerometer_X_AXIS","Time_Mean_Body_Accelerometer_Y_AXIS",
 "Time_Mean_Body_Accelerometer_Z_AXIS","Time_Std_Deviation_Body_Accelerometer_X_AXIS","
